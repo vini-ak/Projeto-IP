@@ -20,7 +20,7 @@ class Assento:
 	def getFila(self):
 		return self._fila
 
-	def getDisponivel(self):
+	def isDisponivel(self):
 		return self._disponivel
 
 	def setDisponivel(self):

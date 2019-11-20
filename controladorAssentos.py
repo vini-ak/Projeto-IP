@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from assento import Assento
+import time
 
 class ControladorAssentos:
 	def __init__(self, comprimentoFila, totalFilas):
@@ -31,7 +32,7 @@ class ControladorAssentos:
 
 	def getCadeira(self, cadeira):
 		''' Retorna uma cadeira. '''
-		return self.__getListaAssentos()[cadeira]
+		return self.getListaAssentos()[cadeira]
 
 	def isDisponivel(self, cadeira):
 		''' Informa se um lugar está disponível ou não. '''
@@ -72,6 +73,7 @@ class ControladorAssentos:
 		arquivo = open('cadeiras.txt')
 		arquivo.read()
 		filas = arquivo.readlines()
+		print(filas)
 		arquivo.close()
 
 		# Perguntando quais cadeiras o usuário deseja comprar
@@ -143,10 +145,15 @@ class ControladorAssentos:
 
 		arquivo.write('Ocupação da sala no momento: %d\n' % self.getOcupacao())
 		arquivo.write('Quantidade de ingressos devolvidos: %d\n' % self.getDevolvidos())
-		arquivo.write('Valor total apurado: %.02f' % getSaldo)
+		arquivo.write('Valor total apurado: %.02f' % self.getSaldo())
 
 		arquivo.close()
 
 		arquivo = open('resumo.txt')	# Abrindo em modo de leitura
-		arquivo.read()	# Lendo o conteúdo do arquivo pós-alterações
+	
+		for line in arquivo.readlines():	# Lendo o conteúdo do arquivo pós-alterações
+			line.replace('\n', '')	# Para não imprimir o '\n'
+			print(line)
+
+		time.sleep(2.5)
 		arquivo.close()

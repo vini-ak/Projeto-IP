@@ -16,12 +16,12 @@ def clear():
 def menu():
 	''' Menu de apresentação do sistema. '''
 	print("\nBem vindo ao sistema de venda de ingressos")
-	print("Escolha a operação:")
+	print("\nEscolha a operação:")
 	print("1 - Comprar ingressos")
 	print("2 - Devolver ingressos")
 	print("3 - Resumo das vendas")
 	print("4 - Sair")
-	escolha = int(input("Digite sua escolha: "))
+	escolha = int(input("\nDigite sua escolha: "))
 	clear()
 	return escolha
 
@@ -38,27 +38,44 @@ while quantFilas > 20:
 # CONTROLADOR DE ASSENTOS:
 controlador = ControladorAssentos(quantColunas, quantFilas)
 
-# CRIANDO OS ARQUIVOS:
-cadeiras = open('cadeiras.txt', 'a+')	# criando/editando arquivo cadeiras.txt
-resumo = open('resumo.txt', 'a+')	# criando/editando arquivo cadeiras.txt
+# CRIANDO OS ARQUIVOS CASO ELES NÃO EXISTAM:
 
+try:	# Criando o arquivo 'resumo.txt' caso ele não exista.
+	open('resumo.txt')
+except:
+	resumo = open('resumo.txt', 'a+')	# criando/editando arquivo cadeiras.txt
+	cadeiras.close()
 
-for i in range(quantFilas * quantColunas):
+total_cadeiras = quantFilas * quantColunas
+
+for i in range(total_cadeiras):
 	
 	# Adicionando a cadeira à lista de assentos.
 	controlador.adicionaCadeira('%02d' % i)
 
-	# Escrevendo a cadeira no arquivo cadeiras.txt
-	cadeiras.write('%02d' % i)
+	try:
+		arquivo = open('cadeiras.txt')
+		arquivo.close()
 
-	if i % quantColunas == 0:
-		cadeiras.write('\n')
-	else:
-		cadeiras.write(' ')
+	except:
+		cadeiras = open('cadeiras.txt', 'w')	# criando arquivo cadeiras.txt
 
+		if i % quantColunas != 0 or i == 0:
+			# Escrevendo a cadeira no arquivo cadeiras.txt
+			cadeiras.write('%02d' % i)
+			cadeiras.write(' ')
+		else:
+			cadeiras.write('\n')
+			# Escrevendo a cadeira no arquivo cadeiras.txt
+			cadeiras.write('%02d' % i)
+			cadeiras.write(' ')
 
-cadeiras.close()
+		cadeiras.close()
+
 resumo.close()
+
+cadeiras = open('cadeiras.txt')
+print(cadeiras.readlines())
 
 while True:
 	escolha = menu()

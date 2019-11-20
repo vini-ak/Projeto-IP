@@ -1,0 +1,3 @@
+Ocupação da sala no momento: 0
+Quantidade de ingressos devolvidos: 0
+Valor total apurado: 0.00
