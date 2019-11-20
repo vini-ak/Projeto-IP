@@ -1,7 +1,11 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 class Assento:
-	def __init__(self, numero, preco = 20, disponivel = True):
+	def __init__(self, numero, fila, preco = 20, disponivel = True):
 		self._numero = numero
-		self._preco = preco
+		self._fila = fila
+		self._preco = preco - fila
 		self._disponivel = disponivel
 
 	def getNumero(self):
@@ -13,8 +17,8 @@ class Assento:
 	def getPreco(self):
 		return self._preco
 
-	def setPreco(self, fila):
-		self._preco = 20 - fila
+	def getFila(self):
+		return self._fila
 
 	def getDisponivel(self):
 		return self._disponivel
