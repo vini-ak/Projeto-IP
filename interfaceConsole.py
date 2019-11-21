@@ -42,16 +42,29 @@ controlador = ControladorAssentos(quantColunas, quantFilas)
 
 try:	# CRIANDO O ARQUIVO 'resumo.txt' CASO ELE NÃO EXISTA
 	resumo = open('resumo.txt')
-except:
+except FileNotFoundError:
 	resumo = open('resumo.txt', 'a+')	# criando/editando arquivo cadeiras.txt
 resumo.close()
 
 
 try:	# CRIANDO O ARQUIVO 'cadeiras.txt' CASO ELE NÃO EXISTA
 	cadeiras = open('cadeiras.txt')
+	filas = cadeiras.readlines()
+	cont = 0
+	cont_xx = 0	# Contador de cadeiras ocupadas.
+	for fila in filas:
+		for c in fila.split():
+			controlador.adicionaCadeira('%02d' % cont)
+			cadeira = controlador.getCadeira('%02d' % cont)
+			print(c, '%02d' % cont)
+			if c == 'xx':
+				cadeira.setDisponivel()	# A cadeira está indisponível.
+				cont_xx += 1
+			cont += 1
+	controlador.cadeirasOcupadas(cont_xx)	# Define a quantidade de cadeiras ocupadas 
 	cadeiras.close()
 
-except:
+except FileNotFoundError:
 	total_cadeiras = quantFilas * quantColunas
 	cadeiras = open('cadeiras.txt', 'w')	# criando arquivo cadeiras.txt
 
@@ -71,11 +84,18 @@ except:
 	cadeiras.close()
 
 
+
 total_cadeiras = quantFilas * quantColunas
 for j in range(total_cadeiras):
 	# Adicionando a cadeira à lista de assentos.
 	controlador.adicionaCadeira('%02d' % j)
 
+status = open('status.txt')
+linhas = status.readlines()
+status.close()
+
+controlador.devolucao(int(linhas[0]))	# Pega a informação do total de ingressos devolvidos
+controlador.saldo(int(linhas[1]))	# Pega a informação do saldo total do cinema
 
 while True:
 	escolha = menu()

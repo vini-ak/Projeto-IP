@@ -52,6 +52,10 @@ class ControladorAssentos:
 		''' Modifica o saldo, seja por compra ou devolução.'''
 		self._saldo += valor
 
+	def saldo(self, total):
+		''' Define o saldo a partir da leitura do arquivo. '''
+		self._saldo = total
+
 	# OCUPAÇÃO DOS ASSENTOS:
 	def getOcupacao(self):
 		''' Retorna a quantidade de assentos ocupados. '''
@@ -61,6 +65,10 @@ class ControladorAssentos:
 		''' Altera o número de cadeiras ocupadas '''
 		self._cadeirasOcupadas += quantidadeLugares
 
+	def cadeirasOcupadas(self, quant):
+		''' Quantidade de cadeiras ocupadas no cinema. '''
+		self._cadeirasOcupadas = quant
+
 	# INGRESSOS DEVOLVIDOS:	
 	def getDevolvidos(self):
 		''' Retorna a quantidade de ingressos devolvidos. '''
@@ -69,6 +77,9 @@ class ControladorAssentos:
 	def setDevolvidos(self, quantidadeLugares):
 		''' Altera o número de cadeiras devolvidas. '''
 		self._devolvidos += quantidadeLugares
+
+	def devolucao(self, ingressosDevolvidos):
+		self._devolvidos = ingressosDevolvidos
 
 	def comprarCadeiras(self):
 		''' Método que será chamado quando um usuário quiser 
@@ -91,13 +102,14 @@ class ControladorAssentos:
 			if cadeira.isDisponivel():	# Verifica se a cadeira está disponível para venda.
 				self.alteraSaldo(cadeira.getPreco())	# Adicionando o valor da venda da cadeira ao saldo do cinema
 				cadeira.setDisponivel()	# Deixando a cadeira indisponível.
-				filas[cadeira.getFila()].replace(c, 'xx')
+				filas[cadeira.getFila()] = filas[cadeira.getFila()].replace(c, 'xx')
+				print(filas[cadeira.getFila()])
 
 				cont += 1	# Como a cadeira foi comprada, a quantidade de cadeiras compradas será incrementada.
 
 			else:	# Se a cadeira não estiver disponível:
 				print('Ops! A cadeira %s não está disponível.' % c)
-
+		time.sleep(2)
 		self.setOcupacao(cont)	# Alterando o número de cadeiras ocupadas.
 
 		arquivo = open('cadeiras.txt', 'w')
@@ -106,6 +118,9 @@ class ControladorAssentos:
 
 		arquivo.close()
 
+		arquivo = open('cadeiras.txt')
+		print(arquivo.readlines())
+		arquivo.close()
 
 	def devolverIngressos(self):
 		''' Método que será chamado caso um cliente queira devolver um ingresso. '''
@@ -119,7 +134,7 @@ class ControladorAssentos:
 
 		for c in cadeiras:
 			cadeira = self.getCadeira(c)
-			if not cadeira.isDisponivel():
+			if cadeira.isDisponivel() == '':
 				self.alteraSaldo(-(0.9 * cadeira.getPreco()))	# Subtraindo o valor da cadeira do saldo do cinema.
 				cadeira.setDisponivel()	# Deixa a cadeira disponível novamente para um venda futura.
 
@@ -142,9 +157,15 @@ class ControladorAssentos:
 
 		arquivo.close()
 
+		status = open('status.txt', 'w')
+		status.write('%d\n' % self.getDevolvidos())
+		status.write('%d\n' % self.getSaldo())
+		status.close()
 
-	def resumo(self):
+
+	def resumo(self, contador_xx):
 		''' Método que retorna o resumo de vendas. '''
+
 
 		arquivo = open('resumo.txt', 'w')
 
