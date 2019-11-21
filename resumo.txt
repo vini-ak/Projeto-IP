@@ -1,3 +1,3 @@
-Ocupação da sala no momento: 0
-Quantidade de ingressos devolvidos: 0
-Valor total apurado: 0.00
+Ocupação da sala no momento: 4
+Quantidade de ingressos devolvidos: 1
+Valor total apurado: 76.90

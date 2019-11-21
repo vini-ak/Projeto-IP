@@ -36,8 +36,13 @@ class ControladorAssentos:
 
 	def isDisponivel(self, cadeira):
 		''' Informa se um lugar está disponível ou não. '''
-		return self.getCadeira().getDisponivel()
-
+		arquivo = open('cadeiras.txt')
+		filas = arquivo.readlines()
+		if cadeira in filas[cadeira.getFila()]:
+			return True
+		else:
+			return False
+			
 	# SALDO DO CINEMA: 
 	def getSaldo(self):
 		''' Retorna o saldo do cinema. '''
@@ -71,9 +76,9 @@ class ControladorAssentos:
 		
 		# Chamando o arquivo cadeiras para uma simples leitura.
 		arquivo = open('cadeiras.txt')
-		arquivo.read()
 		filas = arquivo.readlines()
-		print(filas)
+		for linha in filas:
+			print(linha)
 		arquivo.close()
 
 		# Perguntando quais cadeiras o usuário deseja comprar

@@ -12,7 +12,6 @@ def clear():
 	else:	# Será executado para mac e linux.
 		return os.system('clear')
 
-
 def menu():
 	''' Menu de apresentação do sistema. '''
 	print("\nBem vindo ao sistema de venda de ingressos")
@@ -38,27 +37,27 @@ while quantFilas > 20:
 # CONTROLADOR DE ASSENTOS:
 controlador = ControladorAssentos(quantColunas, quantFilas)
 
-# CRIANDO OS ARQUIVOS CASO ELES NÃO EXISTAM:
+# ==================== CRIANDO OS ARQUIVOS CASO ELES NÃO EXISTAM ==========================
 
-try:	# Criando o arquivo 'resumo.txt' caso ele não exista.
-	open('resumo.txt')
+
+try:	# CRIANDO O ARQUIVO 'resumo.txt' CASO ELE NÃO EXISTA
+	resumo = open('resumo.txt')
 except:
 	resumo = open('resumo.txt', 'a+')	# criando/editando arquivo cadeiras.txt
+resumo.close()
+
+
+try:	# CRIANDO O ARQUIVO 'cadeiras.txt' CASO ELE NÃO EXISTA
+	cadeiras = open('cadeiras.txt')
 	cadeiras.close()
 
-total_cadeiras = quantFilas * quantColunas
+except:
+	total_cadeiras = quantFilas * quantColunas
+	cadeiras = open('cadeiras.txt', 'w')	# criando arquivo cadeiras.txt
 
-for i in range(total_cadeiras):
-	
-	# Adicionando a cadeira à lista de assentos.
-	controlador.adicionaCadeira('%02d' % i)
-
-	try:
-		arquivo = open('cadeiras.txt')
-		arquivo.close()
-
-	except:
-		cadeiras = open('cadeiras.txt', 'w')	# criando arquivo cadeiras.txt
+	for i in range(total_cadeiras):
+		# Adicionando a cadeira à lista de assentos.
+		controlador.adicionaCadeira('%02d' % i)
 
 		if i % quantColunas != 0 or i == 0:
 			# Escrevendo a cadeira no arquivo cadeiras.txt
@@ -69,16 +68,18 @@ for i in range(total_cadeiras):
 			# Escrevendo a cadeira no arquivo cadeiras.txt
 			cadeiras.write('%02d' % i)
 			cadeiras.write(' ')
+	cadeiras.close()
 
-		cadeiras.close()
 
-resumo.close()
+total_cadeiras = quantFilas * quantColunas
+for j in range(total_cadeiras):
+	# Adicionando a cadeira à lista de assentos.
+	controlador.adicionaCadeira('%02d' % j)
 
-cadeiras = open('cadeiras.txt')
-print(cadeiras.readlines())
 
 while True:
 	escolha = menu()
+	time.sleep(1)
 
 	# Chamada para a opção de comprar ingresso
 	if escolha == 1:
@@ -95,5 +96,5 @@ while True:
 	else:
 		print('Opção inválida.')
 
-	time.sleep(0.5)	# Tempo para dar um refresh...
+	time.sleep(1.5)	# Tempo para dar um refresh...
 	clear()	# Limpando a tela.
